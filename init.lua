@@ -76,6 +76,7 @@ Kickstart Guide:
     Feel free to delete them once you know what you're doing, but they should serve as a guide
     for when you are first encountering a few different constructs in your Neovim config.
 
+
 If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
 
 I hope you enjoy your Neovim journey,
@@ -229,7 +230,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
+  'ThePrimeagen/vim-be-good', -- Should install vim be good
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -686,6 +687,22 @@ require('lazy').setup({
           end,
         },
       }
+
+      local lspconfig = require 'lspconfig'
+
+      lspconfig.angularls.setup {
+        cmd = { 'ngserver', '--stdio', '--tsProbeLocations', '/usr/lib/node_modules', '--ngProbeLocations', '/usr/lib/node_modules' },
+        filetypes = { 'typescript', 'html', 'typescriptreact' },
+        root_dir = lspconfig.util.root_pattern('angular.json', 'project.json'),
+      }
+      -- Aggiungi questa configurazione nella sezione LSP
+      -- require('lspconfig').angularls.setup {
+      -- on_attach = on_attach, -- Usa la funzione on_attach già definita in kickstart
+      -- capabilities = capabilities, -- Usa le capabilities già definite in kickstart
+      --cmd = { 'ngserver', '--stdio', '--tsProbeLocations', '', '--ngProbeLocations', '' },
+      --filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx' },
+      --root_dir = require('lspconfig.util').root_pattern('angular.json', 'project.json'),
+      --}
     end,
   },
 
@@ -982,3 +999,4 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
