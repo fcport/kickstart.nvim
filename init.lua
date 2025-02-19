@@ -84,7 +84,6 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -110,6 +109,14 @@ vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
+
+-- For VIMI-TREE
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- optionally enable 24-bit colour
+vim.opt.termguicolors = true
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -238,6 +245,34 @@ require('lazy').setup({
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
   --
 
+  {
+    'nvim-tree/nvim-tree.lua',
+    version = '*', -- Usa l'ultima versione stabile
+    dependencies = { 'nvim-tree/nvim-web-devicons' }, -- Icone per i file
+    config = function()
+      -- Carica le icone di Nerd Font
+      -- Configurazione di NvimTree
+      require('nvim-tree').setup {
+        renderer = {
+          icons = {
+            glyphs = {
+              default = '', -- Icona file generica
+              symlink = '',
+              folder = {
+                arrow_open = '',
+                arrow_closed = '',
+                default = '',
+                open = '',
+                empty = '',
+                empty_open = '',
+                symlink = '',
+              },
+            },
+          },
+        },
+      }
+    end,
+  },
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
   -- If you prefer to call `setup` explicitly, use:
   --    {
