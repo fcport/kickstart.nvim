@@ -723,13 +723,13 @@ require('lazy').setup({
         },
       }
 
-      local lspconfig = require 'lspconfig'
+      --local lspconfig = require 'lspconfig'
 
-      lspconfig.angularls.setup {
-        cmd = { 'ngserver', '--stdio', '--tsProbeLocations', '/usr/lib/node_modules', '--ngProbeLocations', '/usr/lib/node_modules' },
-        filetypes = { 'typescript', 'html', 'typescriptreact' },
-        root_dir = lspconfig.util.root_pattern('angular.json', 'project.json'),
-      }
+      --lspconfig.angularls.setup {
+      -- cmd = { 'ngserver', '--stdio', '--tsProbeLocations', '/usr/lib/node_modules', '--ngProbeLocations', '/usr/lib/node_modules' },
+      --filetypes = { 'typescript', 'html', 'typescriptreact' },
+      --root_dir = lspconfig.util.root_pattern('angular.json', 'project.json'),
+      --}
       -- Aggiungi questa configurazione nella sezione LSP
       -- require('lspconfig').angularls.setup {
       -- on_attach = on_attach, -- Usa la funzione on_attach già definita in kickstart
