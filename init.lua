@@ -238,31 +238,47 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'ThePrimeagen/vim-be-good', -- Should install vim be good
+  --'nvim-tree/nvim-web-devicons', --Should install webdevicons
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
   --
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
   --
+  -- {
+  --   'nvim-tree/nvim-web-devicons',
+  --   lazy = false, -- Assicura che venga caricato subito
+  --   priority = 1000,
+  --   config = function()
+  --     require('nvim-web-devicons').setup()
+  --   end,
+  -- },
+  { 'nvim-tree/nvim-web-devicons', opts = {} },
 
   {
     'nvim-tree/nvim-tree.lua',
-    version = '*', -- Usa l'ultima versione stabile
-    dependencies = { 'nvim-tree/nvim-web-devicons' }, -- Icone per i file
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      -- Carica le icone di Nerd Font
-      -- Configurazione di NvimTree
       require('nvim-tree').setup {
         renderer = {
           icons = {
             glyphs = {
-              default = '', -- Icona file generica
+              default = '',
               symlink = '',
+              git = {
+                unstaged = '✗',
+                staged = '✓',
+                unmerged = '',
+                renamed = '➜',
+                untracked = '★',
+                deleted = '',
+                ignored = '◌',
+              },
               folder = {
                 arrow_open = '',
                 arrow_closed = '',
-                default = '',
-                open = '',
+                default = '',
+                open = '',
                 empty = '',
                 empty_open = '',
                 symlink = '',
@@ -271,8 +287,248 @@ require('lazy').setup({
           },
         },
       }
+
+      require('nvim-tree/nvim-web-devicons').setup {
+        override = {
+          ['.ts'] = { icon = '󰛦', color = '#DD0031', name = 'TypeScript' },
+          ['.html'] = { icon = '󰊴', color = '#E34F26', name = 'HTML' },
+          ['.scss'] = { icon = '', color = '#C6538C', name = 'SCSS' },
+          ['.css'] = { icon = '', color = '#1572B6', name = 'CSS' },
+          ['.json'] = { icon = '', color = '#F7DF1E', name = 'JSON' },
+          ['.component.ts'] = { icon = '󰡄', color = '#DD0031', name = 'AngularComponent' },
+          ['.service.ts'] = { icon = '', color = '#DD0031', name = 'AngularService' },
+          ['.module.ts'] = { icon = '', color = '#DD0031', name = 'AngularModule' },
+        },
+      }
     end,
   },
+  -- Configurazione di nvim-web-devicons per Angular
+  -- {
+  --   'nvim-tree/nvim-web-devicons',
+  --   lazy = false,
+  --   config = function()
+  --     require('nvim-web-devicons').setup {
+  --       override = {
+  --         -- Icone personalizzate per Angular
+  --         -- ['component.ts'] = {
+  --         --   icon = '', -- Icona per i componenti Angular
+  --         --   color = '#dd0031', -- Colore rosso Angular
+  --         --   cterm_color = '161',
+  --         --   name = 'AngularComponent',
+  --         -- },
+  --         -- ['module.ts'] = {
+  --         --   icon = '', -- Icona per i moduli Angular
+  --         --   color = '#dd0031',
+  --         --   cterm_color = '161',
+  --         --   name = 'AngularModule',
+  --         -- },
+  --         ['service.ts'] = {
+  --           icon = '', -- Icona per i servizi Angular
+  --           color = '#dd0031',
+  --           cterm_color = '161',
+  --           name = 'AngularService',
+  --         },
+  --         ['html'] = {
+  --           icon = '', -- Icona per i template HTML
+  --           color = '#e34c26', -- Colore arancione per HTML
+  --           cterm_color = '166',
+  --           name = 'HTML',
+  --         },
+  --         ['scss'] = {
+  --           icon = '', -- Icona per i file SCSS
+  --           color = '#c6538c', -- Colore rosa per SCSS
+  --           cterm_color = '168',
+  --           name = 'SCSS',
+  --         },
+  --         ['ts'] = {
+  --           icon = '', -- Icona per i file TypeScript
+  --           color = '#3178c6', -- Colore blu per TypeScript
+  --           cterm_color = '67',
+  --           name = 'TypeScript',
+  --         },
+  --       },
+  --       default = true, -- Mantieni le icone predefinite per altri file
+  --     }
+  --   end,
+  -- },
+
+  -- -- Configurazione di nvim-tree con icone personalizzate
+  -- {
+  --   'nvim-tree/nvim-tree.lua',
+  --   dependencies = { 'nvim-tree/nvim-web-devicons' },
+  --   config = function()
+  --     require('nvim-tree').setup {
+  --       renderer = {
+  --         icons = {
+  --           glyphs = {
+  --             default = '', -- Icona file generica
+  --             symlink = '',
+  --             folder = {
+  --               arrow_open = '',
+  --               arrow_closed = '',
+  --               default = '',
+  --               open = '',
+  --               empty = '',
+  --               empty_open = '',
+  --               symlink = '',
+  --             },
+  --           },
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
+  -- FINE NUOVO TENTATIVO
+  -- {
+  --   'nvim-tree/nvim-tree.lua',
+  --   version = '*',
+  --   dependencies = { 'nvim-tree/nvim-web-devicons' }, -- Aggiunge icone colorate
+  --   config = function()
+  --     -- Imposta i colori personalizzati per Angular & altri file
+  --     local devicons = require 'nvim-web-devicons'
+
+  --     devicons.set_icon {
+  --       angular = {
+  --         icon = '󰡓',
+  --         color = '#DD0031',
+  --         cterm_color = '196',
+  --         name = 'Angular',
+  --       },
+  --       ['angular.json'] = {
+  --         icon = '󰡓',
+  --         color = '#DD0031',
+  --         cterm_color = '196',
+  --         name = 'AngularJson',
+  --       },
+  --       ['package.json'] = {
+  --         icon = '󰏗',
+  --         color = '#CB3837',
+  --         cterm_color = '166',
+  --         name = 'PackageJson',
+  --       },
+  --       ['tsconfig.json'] = {
+  --         icon = '󰛦',
+  --         color = '#3178C6',
+  --         cterm_color = '32',
+  --         name = 'TsConfig',
+  --       },
+  --       ['ts'] = {
+  --         icon = '',
+  --         color = '#007ACC',
+  --         cterm_color = '33',
+  --         name = 'TypeScript',
+  --       },
+  --       ['html'] = {
+  --         icon = '',
+  --         color = '#E34C26',
+  --         cterm_color = '166',
+  --         name = 'HTML',
+  --       },
+  --       ['json'] = {
+  --         icon = '󰘦',
+  --         color = '#cbcb41',
+  --         cterm_color = '185',
+  --         name = 'JSON',
+  --       },
+  --       ['css'] = {
+  --         icon = '',
+  --         color = '#563d7c',
+  --         cterm_color = '61',
+  --         name = 'CSS',
+  --       },
+  --       ['scss'] = {
+  --         icon = '',
+  --         color = '#C6538C',
+  --         cterm_color = '204',
+  --         name = 'SCSS',
+  --       },
+  --       ['.component.ts'] = {
+  --         icon = '󰛦',
+  --         color = '#DD0031',
+  --         cterm_color = '196',
+  --         name = 'AngularComponent',
+  --       },
+  --       ['.service.ts'] = {
+  --         icon = '',
+  --         color = '#FFA000',
+  --         cterm_color = '214',
+  --         name = 'AngularService',
+  --       },
+  --       ['.module.ts'] = {
+  --         icon = '',
+  --         color = '#1976D2',
+  --         cterm_color = '32',
+  --         name = 'AngularModule',
+  --       },
+  --     }
+
+  --     require('nvim-tree').setup {
+  --       renderer = {
+  --         highlight_git = true,
+  --         highlight_opened_files = 'name',
+  --         root_folder_label = ':~:s?$?/..?',
+  --         indent_markers = {
+  --           enable = true,
+  --         },
+  --         icons = {
+  --           glyphs = {
+  --             default = '󰈙',
+  --             symlink = '',
+  --             folder = {
+  --               arrow_open = '',
+  --               arrow_closed = '',
+  --               default = '',
+  --               open = '',
+  --               empty = '',
+  --               empty_open = '',
+  --               symlink = '',
+  --             },
+  --             git = {
+  --               unstaged = '',
+  --               staged = '',
+  --               unmerged = '',
+  --               renamed = '➜',
+  --               deleted = '',
+  --               untracked = '★',
+  --               ignored = '◌',
+  --             },
+  --           },
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
+
+  --
+  -- HERE IT WORKS --
+  -- {
+  --   'nvim-tree/nvim-tree.lua',
+  --   version = '*', -- Usa l'ultima versione stabile
+  --   dependencies = { 'nvim-tree/nvim-web-devicons' }, -- Icone per i file
+  --   config = function()
+  --     -- Carica le icone di Nerd Font
+  --     -- Configurazione di NvimTree
+  --     require('nvim-tree').setup {
+  --       renderer = {
+  --         icons = {
+  --           glyphs = {
+  --             default = '', -- Icona file generica
+  --             symlink = '',
+  --             folder = {
+  --               arrow_open = '',
+  --               arrow_closed = '',
+  --               default = '',
+  --               open = '',
+  --               empty = '',
+  --               empty_open = '',
+  --               symlink = '',
+  --             },
+  --           },
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
   -- If you prefer to call `setup` explicitly, use:
   --    {
@@ -401,7 +657,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons' },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
