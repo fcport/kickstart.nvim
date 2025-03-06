@@ -174,6 +174,12 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- TS keymaps
+vim.keymap.set('n', '<leader>oi', '<cmd>TSToolsOrganizeImports<cr>', { desc = 'Organizza import' })
+vim.keymap.set('n', '<leader>ru', '<cmd>TSToolsRemoveUnused<cr>', { desc = 'Rimuovi import inutilizzati' })
+vim.keymap.set('n', '<leader>rf', '<cmd>TSToolsRenameFile<cr>', { desc = 'Rinomina file' })
+vim.keymap.set('n', '<leader>ia', '<cmd>TSToolsAddMissingImports<cr>', { desc = 'Aggiungi import mancanti' })
+--
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -238,6 +244,39 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'ThePrimeagen/vim-be-good', -- Should install vim be good
+  'prettier/vim-prettier',
+  { 'github/copilot.vim', opts = {} }, -- Should install copilot
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {
+
+      settings = {
+        tsserver_file_preferences = {
+          includeInlayParameterNameHints = 'all', -- Mostra suggerimenti sui parametri
+          includeInlayVariableTypeHints = true, -- Mostra suggerimenti sui tipi
+          includeInlayFunctionLikeReturnTypeHints = true, -- Mostra i tipi di ritorno delle funzioni
+          importModuleSpecifierPreference = 'non-relative', -- Usa import assoluti invece che relativi
+        },
+        tsserver_format_options = {
+          tabSize = 2, -- Usa 2 spazi per il tab
+          indentSize = 2,
+          convertTabsToSpaces = true,
+          allowIncompleteCompletions = false,
+          allowRenameOfImportPath = false,
+        },
+      },
+    },
+  }, -- ts tools, probably have to setup it better
+  {
+    'windwp/nvim-ts-autotag',
+    opts = {
+      -- Defaults
+      enable_close = true, -- Auto close tags
+      enable_rename = true, -- Auto rename pairs of tags
+      enable_close_on_slash = false, -- Auto close on trailing </
+    },
+  },
   --'nvim-tree/nvim-web-devicons', --Should install webdevicons
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -245,21 +284,15 @@ require('lazy').setup({
   --
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
   --
-  -- {
-  --   'nvim-tree/nvim-web-devicons',
-  --   lazy = false, -- Assicura che venga caricato subito
-  --   priority = 1000,
-  --   config = function()
-  --     require('nvim-web-devicons').setup()
-  --   end,
-  -- },
-  { 'nvim-tree/nvim-web-devicons', opts = {} },
 
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('nvim-tree').setup {
+        update_focused_file = {
+          enable = true,
+        },
         renderer = {
           icons = {
             glyphs = {
@@ -736,22 +769,6 @@ require('lazy').setup({
           end,
         },
       }
-
-      --local lspconfig = require 'lspconfig'
-
-      --lspconfig.angularls.setup {
-      -- cmd = { 'ngserver', '--stdio', '--tsProbeLocations', '/usr/lib/node_modules', '--ngProbeLocations', '/usr/lib/node_modules' },
-      --filetypes = { 'typescript', 'html', 'typescriptreact' },
-      --root_dir = lspconfig.util.root_pattern('angular.json', 'project.json'),
-      --}
-      -- Aggiungi questa configurazione nella sezione LSP
-      -- require('lspconfig').angularls.setup {
-      -- on_attach = on_attach, -- Usa la funzione on_attach già definita in kickstart
-      -- capabilities = capabilities, -- Usa le capabilities già definite in kickstart
-      --cmd = { 'ngserver', '--stdio', '--tsProbeLocations', '', '--ngProbeLocations', '' },
-      --filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx' },
-      --root_dir = require('lspconfig.util').root_pattern('angular.json', 'project.json'),
-      --}
     end,
   },
 
@@ -793,7 +810,15 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        -- javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascript = { 'prettier' },
+        typescript = { 'prettier' },
+        json = { 'prettier' },
+        yaml = { 'prettier' },
+        markdown = { 'prettier' },
+        html = { 'prettier' },
+        css = { 'prettier' },
+        scss = { 'prettier' },
       },
     },
   },
@@ -1008,11 +1033,11 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
