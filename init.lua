@@ -217,6 +217,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+local esc = vim.api.nvim_replace_termcodes('<Esc>', true, true, true)
+-- CUSTOM MACROS --
+vim.fn.setreg('l', 'yo' .. esc .. "iconsole.log('" .. esc .. "pa: '," .. esc .. 'pa)' .. esc .. '')
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -284,6 +288,19 @@ require('lazy').setup({
   --
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
   --
+  {
+    'nvim-tree/nvim-web-devicons',
+    lazy = false, -- Carica solo quando necessario
+    config = function()
+      require('nvim-web-devicons').setup {
+        override = {
+          ['.component.ts'] = { icon = '󰡄', color = '#DD0031', name = 'AngularComponent' },
+          ['.service.ts'] = { icon = '', color = '#DD0031', name = 'AngularService' },
+          ['.module.ts'] = { icon = '', color = '#DD0031', name = 'AngularModule' },
+        },
+      }
+    end,
+  },
 
   {
     'nvim-tree/nvim-tree.lua',
@@ -321,18 +338,18 @@ require('lazy').setup({
         },
       }
 
-      require('nvim-tree/nvim-web-devicons').setup {
-        override = {
-          ['.ts'] = { icon = '󰛦', color = '#DD0031', name = 'TypeScript' },
-          ['.html'] = { icon = '󰊴', color = '#E34F26', name = 'HTML' },
-          ['.scss'] = { icon = '', color = '#C6538C', name = 'SCSS' },
-          ['.css'] = { icon = '', color = '#1572B6', name = 'CSS' },
-          ['.json'] = { icon = '', color = '#F7DF1E', name = 'JSON' },
-          ['.component.ts'] = { icon = '󰡄', color = '#DD0031', name = 'AngularComponent' },
-          ['.service.ts'] = { icon = '', color = '#DD0031', name = 'AngularService' },
-          ['.module.ts'] = { icon = '', color = '#DD0031', name = 'AngularModule' },
-        },
-      }
+      -- require('nvim-tree/nvim-web-devicons').setup {
+      --   override = {
+      --     ['.component.ts'] = { icon = '󰡄', color = '#DD0031', name = 'AngularComponent' },
+      --     ['.service.ts'] = { icon = '', color = '#DD0031', name = 'AngularService' },
+      --     ['.module.ts'] = { icon = '', color = '#DD0031', name = 'AngularModule' },
+      --     ['.ts'] = { icon = '󰛦', color = '#DD0031', name = 'TypeScript' },
+      --     ['.html'] = { icon = '󰊴', color = '#E34F26', name = 'HTML' },
+      --     ['.scss'] = { icon = '', color = '#C6538C', name = 'SCSS' },
+      --     ['.css'] = { icon = '', color = '#1572B6', name = 'CSS' },
+      --     ['.json'] = { icon = '', color = '#F7DF1E', name = 'JSON' },
+      --   },
+      -- }
     end,
   },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -448,7 +465,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons' },
+      -- { 'nvim-tree/nvim-web-devicons' },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
