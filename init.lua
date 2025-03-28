@@ -1,4 +1,4 @@
---[[
+--[[analy
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -249,6 +249,23 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'ThePrimeagen/vim-be-good', -- Should install vim be good
   'prettier/vim-prettier',
+  {
+    'DNLHC/glance.nvim',
+    config = function()
+      -- require('glance').setup {
+      --   -- Configurazione opzionale
+      --   height = 15,
+      --   preview_ratio = 0.5,
+      -- }
+
+      -- Keymaps
+      vim.keymap.set('n', 'gD', '<CMD>Glance definitions<CR>', { desc = 'Glance: Definitions' })
+      vim.keymap.set('n', 'gR', '<CMD>Glance references<CR>', { desc = 'Glance: References' })
+      vim.keymap.set('n', 'gY', '<CMD>Glance type_definitions<CR>', { desc = 'Glance: Type Definitions' })
+      vim.keymap.set('n', 'gM', '<CMD>Glance implementations<CR>', { desc = 'Glance: Implementations' })
+      -- vim.keymap.set('n', 'K', '<CMD>Glance definitions<CR>', { desc = 'Show TS type + props' })
+    end,
+  },
   { 'github/copilot.vim', opts = {} }, -- Should install copilot
   {
     'pmizio/typescript-tools.nvim',
